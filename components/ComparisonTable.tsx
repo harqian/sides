@@ -3,12 +3,12 @@
 import { useMemo } from 'react';
 import { useComparisonStore } from '@/lib/store';
 import { rankItems } from '@/lib/scoring/calculator';
-import { Trophy, Download, RotateCcw, Medal, Award } from 'lucide-react';
+import { Trophy, Download, RotateCcw, Medal, Award, X } from 'lucide-react';
 import ItemColumn from './ItemColumn';
 import EditablePoint from './EditablePoint';
 
 export default function ComparisonTable() {
-  const { comparison, reset, updatePoint } = useComparisonStore();
+  const { comparison, reset, updatePoint, removeItem } = useComparisonStore();
 
   const scores = useMemo(() => {
     if (!comparison || !comparison.userPreferences) return [];
@@ -125,9 +125,22 @@ export default function ComparisonTable() {
                     <th key={item.id} className="px-6 py-4 text-left border-l border-gray-200">
                       <div className="flex items-start justify-between mb-2">
                         <h3 className="font-bold text-lg text-gray-900">{item.name}</h3>
-                        {score?.rank === 1 && <Trophy className="w-5 h-5 text-yellow-500" />}
-                        {score?.rank === 2 && <Medal className="w-5 h-5 text-gray-400" />}
-                        {score?.rank === 3 && <Award className="w-5 h-5 text-amber-600" />}
+                        <div className="flex items-center gap-2">
+                          {comparison.userPreferences?.showScores && (
+                            <>
+                              {score?.rank === 1 && <Trophy className="w-5 h-5 text-yellow-500" />}
+                              {score?.rank === 2 && <Medal className="w-5 h-5 text-gray-400" />}
+                              {score?.rank === 3 && <Award className="w-5 h-5 text-amber-600" />}
+                            </>
+                          )}
+                          <button
+                            onClick={() => removeItem(item.id)}
+                            className="p-1 hover:bg-red-100 rounded transition-colors group"
+                            title="Delete this item"
+                          >
+                            <X className="w-4 h-4 text-gray-400 group-hover:text-red-600" />
+                          </button>
+                        </div>
                       </div>
                       {item.description && (
                         <p className="text-sm text-gray-600 font-normal mb-3">{item.description}</p>

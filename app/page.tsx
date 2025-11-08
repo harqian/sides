@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Decision Maker</h1>
@@ -32,17 +32,17 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="px-4 sm:px-6 lg:px-8 py-8">
         {!comparison ? (
           <InputForm />
         ) : (
-          <div className="flex gap-6">
+          <div className="flex gap-6 h-[calc(100vh-180px)]">
             {showPriorityPanel && (
-              <div className="w-80 flex-shrink-0">
+              <div className="w-80 flex-shrink-0 overflow-y-auto">
                 <PriorityPanel />
               </div>
             )}
-            <div className="flex-1 min-w-0 space-y-6">
+            <div className="flex-1 min-w-0 space-y-6 overflow-y-auto">
               <ComparisonTable />
               <RefinementPanel />
             </div>

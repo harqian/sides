@@ -141,24 +141,6 @@ Google Pixel 8 - $699
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* API Key Input */}
-          <div>
-            <label htmlFor="apiKey" className="block text-sm font-medium text-gray-700 mb-2">
-              Gemini API Key (optional - leave empty for demo mode)
-            </label>
-            <input
-              id="apiKey"
-              type="password"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              placeholder="Enter your Gemini API key..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <p className="mt-1 text-xs text-gray-500">
-              Get your API key from: https://makersuite.google.com/app/apikey
-            </p>
-          </div>
-
           {/* Text Input Area */}
           <div>
             <label htmlFor="comparisonText" className="block text-sm font-medium text-gray-700 mb-2">
@@ -241,15 +223,6 @@ Google Pixel 8 - $699
             )}
           </button>
         </form>
-
-        {!apiKey.trim() && (
-          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-sm text-yellow-800">
-              <strong>Demo Mode:</strong> Without an API key, the app will use mock data for demonstration.
-              Add your Gemini API key above for AI-powered parsing.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );
