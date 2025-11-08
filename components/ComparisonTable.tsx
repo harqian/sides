@@ -9,7 +9,7 @@ import EditablePoint from './EditablePoint';
 import HistoryPanel from './HistoryPanel';
 
 export default function ComparisonTable() {
-  const { comparison, reset, updatePoint, removeItem, updateTitle } = useComparisonStore();
+  const { comparison, reset, updatePoint, removeItem, updateTitle, deletePoint } = useComparisonStore();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [titleInput, setTitleInput] = useState('');
 
@@ -264,6 +264,7 @@ export default function ComparisonTable() {
                                   itemId={item.id}
                                   userPreferences={comparison.userPreferences!}
                                   onUpdate={(pointId, updates) => updatePoint(item.id, pointId, updates)}
+                                  onDelete={(pointId) => deletePoint(item.id, pointId)}
                                 />
                               ))
                             )}
