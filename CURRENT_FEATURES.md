@@ -1,4 +1,4 @@
-# Decision Maker - Features
+# Sides - Features
 
 A powerful AI-driven comparison tool that helps you make informed decisions by organizing, analyzing, and personalizing your options.
 

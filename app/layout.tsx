@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Decision Maker - Compare Options Intelligently",
+  title: "Sides - Compare Options Intelligently",
   description: "AI-powered decision comparison tool with personalized priority weighting",
 };
 

@@ -1,4 +1,4 @@
-# Quick Start Guide - Decision Maker
+# Quick Start Guide - Sides
 
 ## 🚀 Your App is Running!
 
@@ -118,7 +118,7 @@ Then:
 ## 📱 UI Tour
 
 ### Top Header
-- **Title**: "Decision Maker"
+- **Title**: "Sides"
 - **Toggle button**: Show/Hide priority panel
 
 ### Priority Panel (Left Side)

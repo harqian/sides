@@ -1,6 +1,6 @@
 dealbreakers and dealbreaker logic
 
-spider chart for immediate understanding of the things
+~~spider chart for immediate understanding of the things~~
 
 have a screen on the homepage that shows previous preferences and lets you edit them to correct the memory to what you want
 

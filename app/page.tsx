@@ -91,7 +91,7 @@ export default function Home() {
               )}
             </div>
             <div className="flex-1 flex flex-col items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Decision Maker</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Sides</h1>
               <p className="text-xs text-gray-600">Compare options with personalized priorities</p>
             </div>
             <div className="flex-1 flex items-center justify-end gap-4">

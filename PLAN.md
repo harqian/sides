@@ -489,7 +489,7 @@ const getPersonalizedColor = (point, userPreferences) => {
 ### Compact Mobile Layout
 ```
 ┌───────────────────────────┐
-│  Decision Maker   [≡ Menu]│
+│  Sides   [≡ Menu]│
 ├───────────────────────────┤
 │ [Input] [Table] [Settings]│
 ├───────────────────────────┤

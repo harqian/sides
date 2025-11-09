@@ -1,4 +1,4 @@
-# Decision Maker 🎯
+# Sides 🎯
 
 An AI-powered decision comparison tool with **personalized priority weighting**. Make better decisions by visualizing options with colors and scores that adapt to YOUR priorities.
 
