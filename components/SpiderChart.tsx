@@ -49,9 +49,9 @@ export default function SpiderChart({ items, userPreferences }: SpiderChartProps
     return { categories, itemScores };
   }, [items, userPreferences]);
 
-  const size = 250;
+  const size = 160;
   const center = size / 2;
-  const radius = size / 2 - 60;
+  const radius = size / 2 - 40;
   const numCategories = chartData.categories.length;
 
   const getPoint = (index: number, value: number) => {
@@ -64,7 +64,7 @@ export default function SpiderChart({ items, userPreferences }: SpiderChartProps
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-white rounded-lg shadow-sm px-4 py-2">
       <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto">
         {[2, 4, 6, 8, 10].map(level => {
           const points = chartData.categories.map((_, i) => getPoint(i, level)).map(p => `${p.x},${p.y}`).join(' ');
@@ -124,7 +124,7 @@ export default function SpiderChart({ items, userPreferences }: SpiderChartProps
               y={point.y}
               textAnchor={textAnchor}
               className="fill-gray-700"
-              style={{ fontSize: '6px', fontWeight: '500' }}
+              style={{ fontSize: '4px', fontWeight: '500' }}
             >
               {category}
             </text>
@@ -132,16 +132,16 @@ export default function SpiderChart({ items, userPreferences }: SpiderChartProps
         })}
       </svg>
 
-      <div className="flex flex-wrap gap-4 justify-center mt-4">
+      <div className="flex flex-wrap gap-3 justify-center mt-2">
         {chartData.itemScores.map((item, i) => {
           const color = getItemColor(items[i].id, items);
           return (
-            <div key={item.name} className="flex items-center gap-2">
+            <div key={item.name} className="flex items-center gap-1.5">
               <div
-                className="w-4 h-4 rounded"
+                className="w-3 h-3 rounded"
                 style={{ backgroundColor: color }}
               />
-              <span className="text-sm text-gray-700 font-medium">{item.name}</span>
+              <span className="text-xs text-gray-700 font-medium">{item.name}</span>
             </div>
           );
         })}

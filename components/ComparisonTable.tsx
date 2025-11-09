@@ -12,9 +12,7 @@ import AddPointButton from './AddPointButton';
 import { loadDisplayPreferences, saveDisplayPreferences } from '@/lib/storage';
 
 export default function ComparisonTable() {
-  const { comparison, reset, updatePoint, removeItem, updateTitle, deletePoint, addPoint } = useComparisonStore();
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [titleInput, setTitleInput] = useState('');
+  const { comparison, reset, updatePoint, removeItem, deletePoint, addPoint } = useComparisonStore();
   const [showSpiderChart, setShowSpiderChart] = useState(true);
 
   useEffect(() => {
@@ -73,57 +71,8 @@ export default function ComparisonTable() {
     a.click();
   };
 
-  const handleTitleEdit = () => {
-    setTitleInput(comparison?.title || '');
-    setIsEditingTitle(true);
-  };
-
-  const handleTitleSave = () => {
-    if (titleInput.trim()) {
-      updateTitle(titleInput.trim());
-    }
-    setIsEditingTitle(false);
-  };
-
   return (
     <div className="space-y-6">
-      {/* Editable Title */}
-      <div className="bg-white rounded-lg shadow-sm p-4">
-        <div className="flex items-center gap-3">
-          {isEditingTitle ? (
-            <>
-              <input
-                type="text"
-                value={titleInput}
-                onChange={(e) => setTitleInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleTitleSave()}
-                className="flex-1 text-2xl font-bold border-b-2 border-blue-500 focus:outline-none"
-                autoFocus
-              />
-              <button
-                onClick={handleTitleSave}
-                className="p-2 hover:bg-green-100 rounded transition-colors"
-              >
-                <Check className="w-5 h-5 text-green-600" />
-              </button>
-            </>
-          ) : (
-            <>
-              <h2 className="text-2xl font-bold text-gray-900 flex-1">
-                {comparison?.title || 'My Comparison'}
-              </h2>
-              <button
-                onClick={handleTitleEdit}
-                className="p-2 hover:bg-gray-100 rounded transition-colors"
-                title="Edit title"
-              >
-                <Edit2 className="w-4 h-4 text-gray-500" />
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
       {/* Header with Actions */}
       {!comparison.userPreferences?.hideWinner && (
         <div className="bg-white rounded-lg shadow-sm p-4 flex items-center justify-between">
@@ -201,7 +150,9 @@ export default function ComparisonTable() {
 
       {/* Spider Chart */}
       {showSpiderChart && (
-        <SpiderChart items={comparison.items} userPreferences={comparison.userPreferences!} />
+        <div className="max-w-sm mx-auto">
+          <SpiderChart items={comparison.items} userPreferences={comparison.userPreferences!} />
+        </div>
       )}
 
       {/* Comparison Table */}
