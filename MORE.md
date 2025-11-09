@@ -8,7 +8,7 @@ default should be the personalized one
 
 ~~undo/redo for edits~~
 
-export to csv (make it correct)
+~~export to csv (make it correct)~~
 
 connection across different people making decisions (some nice unified view of everyone's decisions)
 

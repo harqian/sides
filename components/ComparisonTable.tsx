@@ -44,7 +44,10 @@ export default function ComparisonTable() {
     });
 
     csv += 'Score,';
-    csv += scores.map(s => s.totalScore.toFixed(1)).join(',');
+    csv += comparison.items.map(item => {
+      const score = scores.find(s => s.itemId === item.id);
+      return score ? score.totalScore.toFixed(1) : '0.0';
+    }).join(',');
 
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
