@@ -136,47 +136,23 @@ export default function RefinementPanel() {
           )}
         </div>
 
-        <div className="flex gap-2">
-          <button
-            onClick={toggleRecording}
-            disabled={isProcessing}
-            className={`flex-1 px-4 py-2 border rounded-lg transition-colors flex items-center justify-center gap-2 ${
-              isRecording
-                ? 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100'
-                : 'border-gray-300 hover:bg-gray-50'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-          >
-            {isRecording ? (
-              <>
-                <MicOff className="w-4 h-4" />
-                Stop Recording
-              </>
-            ) : (
-              <>
-                <Mic className="w-4 h-4" />
-                Voice Input
-              </>
-            )}
-          </button>
-
-          <button
-            onClick={handleSubmit}
-            disabled={!instructions.trim() || isProcessing || isRecording}
-            className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              <>
-                <Send className="w-4 h-4" />
-                Apply Changes
-              </>
-            )}
-          </button>
-        </div>
+        <button
+          onClick={handleSubmit}
+          disabled={!instructions.trim() || isProcessing}
+          className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4" />
+              Apply Changes
+            </>
+          )}
+        </button>
       </div>
 
       <div className="mt-4 p-3 bg-purple-50 rounded-lg">
