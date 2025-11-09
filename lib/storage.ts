@@ -1,6 +1,8 @@
 import { Comparison, UserPreferences } from '@/types/comparison';
 
 const HISTORY_KEY = 'decision-maker-history';
+const CURRENT_KEY = 'decision-maker-current';
+const PREFERENCES_KEY = 'decision-maker-preferences';
 const MAX_HISTORY_ITEMS = 20;
 
 export interface ComparisonHistoryItem {
@@ -139,4 +141,75 @@ export function getAveragePreferences(history: PreferenceHistory): Record<string
  */
 export function hasEnoughHistory(history: PreferenceHistory): boolean {
   return history.comparisons.length >= 2;
+}
+
+/**
+ * Save the current comparison to localStorage
+ */
+export function saveCurrentComparison(comparison: Comparison | null): void {
+  if (typeof window === 'undefined') return;
+
+  try {
+    if (comparison === null) {
+      localStorage.removeItem(CURRENT_KEY);
+    } else {
+      localStorage.setItem(CURRENT_KEY, JSON.stringify(comparison));
+    }
+  } catch (error) {
+    console.error('Failed to save current comparison:', error);
+  }
+}
+
+/**
+ * Load the current comparison from localStorage
+ */
+export function loadCurrentComparison(): Comparison | null {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const stored = localStorage.getItem(CURRENT_KEY);
+    if (!stored) return null;
+
+    const parsed = JSON.parse(stored);
+
+    // Convert date strings back to Date objects
+    return {
+      ...parsed,
+      createdAt: new Date(parsed.createdAt),
+      updatedAt: new Date(parsed.updatedAt)
+    };
+  } catch (error) {
+    console.error('Failed to load current comparison:', error);
+    return null;
+  }
+}
+
+/**
+ * Save user's display preferences
+ */
+export function saveDisplayPreferences(showScores: boolean, hideWinner: boolean): void {
+  if (typeof window === 'undefined') return;
+
+  try {
+    localStorage.setItem(PREFERENCES_KEY, JSON.stringify({ showScores, hideWinner }));
+  } catch (error) {
+    console.error('Failed to save preferences:', error);
+  }
+}
+
+/**
+ * Load user's display preferences
+ */
+export function loadDisplayPreferences(): { showScores: boolean; hideWinner: boolean } {
+  if (typeof window === 'undefined') return { showScores: true, hideWinner: false };
+
+  try {
+    const stored = localStorage.getItem(PREFERENCES_KEY);
+    if (!stored) return { showScores: true, hideWinner: false };
+
+    return JSON.parse(stored);
+  } catch (error) {
+    console.error('Failed to load preferences:', error);
+    return { showScores: true, hideWinner: false };
+  }
 }

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useComparisonStore } from '@/lib/store';
 import CategorySlider from './CategorySlider';
 import { Settings, TrendingUp, Eye, Sparkles, Loader2 } from 'lucide-react';
-import { loadHistory, getAveragePreferences, hasEnoughHistory } from '@/lib/storage';
+import { loadHistory, getAveragePreferences, hasEnoughHistory, saveDisplayPreferences } from '@/lib/storage';
 import { createPersonalizedWeights, simplePreferenceMapping } from '@/lib/ai/preferenceMapper';
 
 const PRESET_PROFILES = [
@@ -115,7 +115,7 @@ export default function PriorityPanel() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm sticky top-4">
+    <div className="bg-white rounded-lg shadow-sm">
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-2 mb-2">
@@ -189,30 +189,17 @@ export default function PriorityPanel() {
         </div>
         <div className="space-y-3">
           <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-sm text-gray-700">Show Winner Banner</span>
+            <span className="text-sm text-gray-700">Show Results</span>
             <button
-              onClick={() => updateUserPreferences({
-                ...comparison.userPreferences!,
-                hideWinner: !comparison.userPreferences?.hideWinner
-              })}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                comparison.userPreferences?.hideWinner ? 'bg-gray-300' : 'bg-blue-600'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  comparison.userPreferences?.hideWinner ? 'translate-x-1' : 'translate-x-6'
-                }`}
-              />
-            </button>
-          </label>
-          <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-sm text-gray-700">Show Scores</span>
-            <button
-              onClick={() => updateUserPreferences({
-                ...comparison.userPreferences!,
-                showScores: !comparison.userPreferences?.showScores
-              })}
+              onClick={() => {
+                const newShowScores = !comparison.userPreferences?.showScores;
+                saveDisplayPreferences(newShowScores, !newShowScores);
+                updateUserPreferences({
+                  ...comparison.userPreferences!,
+                  hideWinner: !newShowScores,
+                  showScores: newShowScores
+                });
+              }}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 comparison.userPreferences?.showScores ? 'bg-blue-600' : 'bg-gray-300'
               }`}

@@ -85,11 +85,6 @@ export default function RefinementPanel() {
   const handleSubmit = async () => {
     if (!instructions.trim() || !comparison) return;
 
-    if (!apiKey) {
-      setError('API key is required. Please enter your Gemini API key in the initial form.');
-      return;
-    }
-
     setIsProcessing(true);
     setError(null);
 

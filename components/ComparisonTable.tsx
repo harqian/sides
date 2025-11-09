@@ -1,14 +1,17 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useComparisonStore } from '@/lib/store';
 import { rankItems } from '@/lib/scoring/calculator';
-import { Trophy, Download, RotateCcw, Medal, Award } from 'lucide-react';
+import { Trophy, Download, RotateCcw, Medal, Award, X, Edit2, Check } from 'lucide-react';
 import ItemColumn from './ItemColumn';
 import EditablePoint from './EditablePoint';
+import HistoryPanel from './HistoryPanel';
 
 export default function ComparisonTable() {
-  const { comparison, reset, updatePoint } = useComparisonStore();
+  const { comparison, reset, updatePoint, removeItem, updateTitle, deletePoint } = useComparisonStore();
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [titleInput, setTitleInput] = useState('');
 
   const scores = useMemo(() => {
     if (!comparison || !comparison.userPreferences) return [];
@@ -51,8 +54,57 @@ export default function ComparisonTable() {
     a.click();
   };
 
+  const handleTitleEdit = () => {
+    setTitleInput(comparison?.title || '');
+    setIsEditingTitle(true);
+  };
+
+  const handleTitleSave = () => {
+    if (titleInput.trim()) {
+      updateTitle(titleInput.trim());
+    }
+    setIsEditingTitle(false);
+  };
+
   return (
     <div className="space-y-6">
+      {/* Editable Title */}
+      <div className="bg-white rounded-lg shadow-sm p-4">
+        <div className="flex items-center gap-3">
+          {isEditingTitle ? (
+            <>
+              <input
+                type="text"
+                value={titleInput}
+                onChange={(e) => setTitleInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleTitleSave()}
+                className="flex-1 text-2xl font-bold border-b-2 border-blue-500 focus:outline-none"
+                autoFocus
+              />
+              <button
+                onClick={handleTitleSave}
+                className="p-2 hover:bg-green-100 rounded transition-colors"
+              >
+                <Check className="w-5 h-5 text-green-600" />
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 className="text-2xl font-bold text-gray-900 flex-1">
+                {comparison?.title || 'My Comparison'}
+              </h2>
+              <button
+                onClick={handleTitleEdit}
+                className="p-2 hover:bg-gray-100 rounded transition-colors"
+                title="Edit title"
+              >
+                <Edit2 className="w-4 h-4 text-gray-500" />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
       {/* Header with Actions */}
       {!comparison.userPreferences?.hideWinner && (
         <div className="bg-white rounded-lg shadow-sm p-4 flex items-center justify-between">
@@ -68,6 +120,7 @@ export default function ComparisonTable() {
             </div>
           </div>
           <div className="flex gap-2">
+            <HistoryPanel />
             <button
               onClick={handleExportCSV}
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -90,6 +143,7 @@ export default function ComparisonTable() {
       {comparison.userPreferences?.hideWinner && (
         <div className="bg-white rounded-lg shadow-sm p-4 flex items-center justify-end">
           <div className="flex gap-2">
+            <HistoryPanel />
             <button
               onClick={handleExportCSV}
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -125,9 +179,22 @@ export default function ComparisonTable() {
                     <th key={item.id} className="px-6 py-4 text-left border-l border-gray-200">
                       <div className="flex items-start justify-between mb-2">
                         <h3 className="font-bold text-lg text-gray-900">{item.name}</h3>
-                        {score?.rank === 1 && <Trophy className="w-5 h-5 text-yellow-500" />}
-                        {score?.rank === 2 && <Medal className="w-5 h-5 text-gray-400" />}
-                        {score?.rank === 3 && <Award className="w-5 h-5 text-amber-600" />}
+                        <div className="flex items-center gap-2">
+                          {comparison.userPreferences?.showScores && (
+                            <>
+                              {score?.rank === 1 && <Trophy className="w-5 h-5 text-yellow-500" />}
+                              {score?.rank === 2 && <Medal className="w-5 h-5 text-gray-400" />}
+                              {score?.rank === 3 && <Award className="w-5 h-5 text-amber-600" />}
+                            </>
+                          )}
+                          <button
+                            onClick={() => removeItem(item.id)}
+                            className="p-1 hover:bg-red-100 rounded transition-colors group"
+                            title="Delete this item"
+                          >
+                            <X className="w-4 h-4 text-gray-400 group-hover:text-red-600" />
+                          </button>
+                        </div>
                       </div>
                       {item.description && (
                         <p className="text-sm text-gray-600 font-normal mb-3">{item.description}</p>
@@ -197,6 +264,7 @@ export default function ComparisonTable() {
                                   itemId={item.id}
                                   userPreferences={comparison.userPreferences!}
                                   onUpdate={(pointId, updates) => updatePoint(item.id, pointId, updates)}
+                                  onDelete={(pointId) => deletePoint(item.id, pointId)}
                                 />
                               ))
                             )}

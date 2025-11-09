@@ -10,9 +10,10 @@ interface EditablePointProps {
   itemId: string;
   userPreferences: UserPreferences;
   onUpdate: (pointId: string, updates: { text?: string; weight?: number }) => void;
+  onDelete: (pointId: string) => void;
 }
 
-export default function EditablePoint({ point, itemId, userPreferences, onUpdate }: EditablePointProps) {
+export default function EditablePoint({ point, itemId, userPreferences, onUpdate, onDelete }: EditablePointProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(point.text);
   const [editWeight, setEditWeight] = useState(point.weight);
@@ -114,13 +115,22 @@ export default function EditablePoint({ point, itemId, userPreferences, onUpdate
         <span className="text-xs opacity-60 font-medium">
           {point.weight}/10
         </span>
-        <button
-          onClick={() => setIsEditing(true)}
-          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-white/50 rounded"
-          title="Edit"
-        >
-          <Pencil className="w-3 h-3 text-gray-600" />
-        </button>
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+          <button
+            onClick={() => setIsEditing(true)}
+            className="p-1 hover:bg-white/50 rounded"
+            title="Edit"
+          >
+            <Pencil className="w-3 h-3 text-gray-600" />
+          </button>
+          <button
+            onClick={() => onDelete(point.id)}
+            className="p-1 hover:bg-red-100 rounded"
+            title="Delete"
+          >
+            <X className="w-3 h-3 text-red-600" />
+          </button>
+        </div>
       </div>
     </div>
   );
