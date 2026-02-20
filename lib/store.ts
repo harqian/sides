@@ -5,11 +5,9 @@ import { saveToHistory, saveCurrentComparison, loadCurrentComparison, loadDispla
 
 interface ComparisonStore {
   comparison: Comparison | null;
-  apiKey: string;
   undoStack: Comparison[];
   redoStack: Comparison[];
   setComparison: (comparison: Comparison) => void;
-  setApiKey: (apiKey: string) => void;
   updateUserPreferences: (preferences: UserPreferences) => void;
   updateCategoryWeight: (category: string, importance: number) => void;
   addItem: (item: ComparisonItem) => void;
@@ -54,7 +52,6 @@ export const useComparisonStore = create<ComparisonStore>((set, get) => {
 
   return {
     comparison: loadCurrentComparison(),
-    apiKey: '',
     undoStack: initialStack.undoStack,
     redoStack: initialStack.redoStack,
 
@@ -63,8 +60,6 @@ export const useComparisonStore = create<ComparisonStore>((set, get) => {
       saveCurrentComparison(comparison);
       set({ comparison });
     },
-
-  setApiKey: (apiKey) => set({ apiKey }),
 
   updateUserPreferences: (preferences) => set((state) => {
     if (!state.comparison) return state;

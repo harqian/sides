@@ -56,29 +56,19 @@
 
 ## 🎯 How to Use
 
-### Option 1: Quick Demo (No API Key)
+### Option 1: Quick Start (With API Key)
 1. Open http://localhost:3000
-2. Click **"Load Example"**
-3. Click **"Generate Comparison"**
-4. See the phone comparison appear!
-5. Play with the **priority sliders** on the left
-6. Watch colors change in real-time!
-
-### Option 2: With Your Own Data (No API Key)
-1. Open http://localhost:3000
-2. Leave API key field empty
-3. Paste your comparison text (any format works!)
-4. Click **"Generate Comparison"**
-5. App will use mock data structure
-6. Adjust priorities and explore!
-
-### Option 3: Full AI Power (With Gemini API Key)
-1. Get API key from: https://makersuite.google.com/app/apikey
-2. Open http://localhost:3000
-3. Enter your API key in the field
+2. Add `GEMINI_API_KEY` to your `.env` file
+3. Restart the dev server
 4. Paste your comparison text
 5. Click **"Generate Comparison"**
-6. AI will intelligently parse your text!
+6. Play with the **priority sliders** on the left
+
+### Option 2: Try the Built-In Example Input
+1. Open http://localhost:3000
+2. Click **"Load Example"** to prefill sample text
+3. Click **"Generate Comparison"**
+4. Adjust priorities and explore!
 
 ## 🎨 Features to Try
 
@@ -176,7 +166,7 @@ types/comparison.ts       → TypeScript interfaces
 ✅ Drag and drop support
 ✅ Paste text support
 ✅ AI integration (Gemini)
-✅ Works without API key (demo mode)
+✅ Uses server-side API key (not exposed in client)
 ✅ Color-coded comparisons
 ✅ Weight-based intensity
 ✅ Polarity-based colors

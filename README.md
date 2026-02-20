@@ -7,7 +7,7 @@ An AI-powered decision comparison tool with **personalized priority weighting**.
 ### 1. **AI-Powered Parsing**
 - Paste unstructured text about your options
 - Gemini AI extracts items, pros/cons, and categories automatically
-- Works in **demo mode** without API key for testing
+- Uses a **server-side** Gemini API key (not exposed to browser)
 
 ### 2. **Personalized Priority System** ⭐ (The Game Changer!)
 - Adjust how important each category is to YOU (0-10 scale)
@@ -44,7 +44,7 @@ An AI-powered decision comparison tool with **personalized priority weighting**.
 
 ### Prerequisites
 - Node.js 18+ installed
-- (Optional) Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+- Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
 
 ### Installation
 
@@ -63,18 +63,16 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### Using the App
 
-#### Without API Key (Demo Mode)
-1. Click "Load Example" to see sample data
-2. Or paste your own comparison text
-3. Click "Generate Comparison"
-4. App uses mock data to demonstrate features
-
-#### With Gemini API Key
+#### Configure Gemini API Key
 1. Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Paste it in the "Gemini API Key" field
-3. Paste your comparison details
-4. Click "Generate Comparison"
-5. AI will parse your text and create a smart comparison!
+2. Create `.env` from `.env.example`
+3. Set `GEMINI_API_KEY=your_api_key_here`
+4. Restart `npm run dev`
+
+#### Generate Comparison
+1. Paste your comparison details
+2. Click "Generate Comparison"
+3. AI will parse your text and create a smart comparison
 
 ## 📝 Example Input
 

@@ -1,18 +1,17 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { parseComparisonText, mockParseComparisonText } from '@/lib/ai/parser';
+import { parseComparisonWithServer } from '@/lib/ai/client';
 import { useComparisonStore, createDefaultPreferences } from '@/lib/store';
 import { generateId } from '@/lib/utils';
 import { Upload, Sparkles } from 'lucide-react';
 
 export default function InputForm() {
   const [inputText, setInputText] = useState('');
-  const [apiKey, setApiKey] = useState(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isDragging, setIsDragging] = useState(false);
-  const { setComparison, setApiKey: setStoreApiKey } = useComparisonStore();
+  const { setComparison } = useComparisonStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,13 +25,7 @@ export default function InputForm() {
     setError('');
 
     try {
-      let parsed;
-      if (apiKey.trim()) {
-        parsed = await parseComparisonText(inputText, apiKey);
-      } else {
-        // Use mock data for testing
-        parsed = mockParseComparisonText(inputText);
-      }
+      const parsed = await parseComparisonWithServer(inputText);
 
       const comparison = {
         id: generateId(),
@@ -45,9 +38,6 @@ export default function InputForm() {
       };
 
       setComparison(comparison);
-      if (apiKey.trim()) {
-        setStoreApiKey(apiKey);
-      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to parse comparison');
     } finally {

@@ -2,11 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useComparisonStore } from '@/lib/store';
-import { refineComparison } from '@/lib/ai/refiner';
+import { refineComparisonWithServer } from '@/lib/ai/client';
 import { Mic, MicOff, Send, Loader2, Sparkles } from 'lucide-react';
 
 export default function RefinementPanel() {
-  const { comparison, setComparison, apiKey } = useComparisonStore();
+  const { comparison, setComparison } = useComparisonStore();
   const [instructions, setInstructions] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -89,7 +89,7 @@ export default function RefinementPanel() {
     setError(null);
 
     try {
-      const updatedComparison = await refineComparison(comparison, instructions.trim(), apiKey);
+      const updatedComparison = await refineComparisonWithServer(comparison, instructions.trim());
       setComparison(updatedComparison);
       setInstructions('');
       setTranscript('');

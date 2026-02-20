@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { CategoryWeight } from '@/types/comparison';
+import { getGeminiApiKey } from './serverConfig';
 
 /**
  * Use AI to map historical category preferences to new categories
@@ -7,13 +8,9 @@ import { CategoryWeight } from '@/types/comparison';
  */
 export async function mapPreferencesToCategories(
   historicalPreferences: Record<string, number>,
-  newCategories: string[],
-  apiKey: string
+  newCategories: string[]
 ): Promise<Record<string, number>> {
-  if (!apiKey) {
-    throw new Error('API key is required');
-  }
-
+  const apiKey = getGeminiApiKey();
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
@@ -88,13 +85,11 @@ Make sure all new categories are included in the response with importance values
  */
 export async function createPersonalizedWeights(
   categories: string[],
-  historicalPreferences: Record<string, number>,
-  apiKey: string
+  historicalPreferences: Record<string, number>
 ): Promise<CategoryWeight[]> {
   const mapped = await mapPreferencesToCategories(
     historicalPreferences,
-    categories,
-    apiKey
+    categories
   );
 
   return categories.map(category => ({

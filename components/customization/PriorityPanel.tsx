@@ -5,7 +5,8 @@ import { useComparisonStore } from '@/lib/store';
 import CategorySlider from './CategorySlider';
 import { Settings, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
 import { loadHistory, getAveragePreferences, hasEnoughHistory, saveDisplayPreferences } from '@/lib/storage';
-import { createPersonalizedWeights, simplePreferenceMapping } from '@/lib/ai/preferenceMapper';
+import { mapPreferencesWithServer } from '@/lib/ai/client';
+import { simplePreferenceMapping } from '@/lib/ai/simplePreferenceMapping';
 
 const PRESET_PROFILES = [
   {
@@ -26,7 +27,7 @@ const PRESET_PROFILES = [
 ];
 
 export default function PriorityPanel() {
-  const { comparison, updateCategoryWeight, updateUserPreferences, apiKey } = useComparisonStore();
+  const { comparison, updateCategoryWeight, updateUserPreferences } = useComparisonStore();
   const [hasHistory, setHasHistory] = useState(false);
   const [isLoadingPersonalized, setIsLoadingPersonalized] = useState(false);
   const [personalizedError, setPersonalizedError] = useState<string | null>(null);
@@ -68,24 +69,19 @@ export default function PriorityPanel() {
       const averagePrefs = getAveragePreferences(history);
       const currentCategories = comparison.userPreferences.categoryWeights.map(cw => cw.category);
 
-      let personalizedWeights;
-
-      if (apiKey) {
-        // Use AI to intelligently map preferences
-        personalizedWeights = await createPersonalizedWeights(
-          currentCategories,
-          averagePrefs,
-          apiKey
-        );
-      } else {
-        // Use simple string matching
-        const mapped = simplePreferenceMapping(averagePrefs, currentCategories);
-        personalizedWeights = currentCategories.map(cat => ({
-          category: cat,
-          importance: mapped[cat] || 5,
-          visible: true
-        }));
+      let mapped: Record<string, number>;
+      try {
+        mapped = await mapPreferencesWithServer(averagePrefs, currentCategories);
+      } catch {
+        // Fallback to local mapping when server AI is unavailable.
+        mapped = simplePreferenceMapping(averagePrefs, currentCategories);
       }
+
+      const personalizedWeights = currentCategories.map(cat => ({
+        category: cat,
+        importance: mapped[cat] || 5,
+        visible: true
+      }));
 
       updateUserPreferences({
         ...comparison.userPreferences,

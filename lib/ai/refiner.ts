@@ -1,16 +1,13 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Comparison } from '@/types/comparison';
 import { generateId } from '@/lib/utils';
+import { getGeminiApiKey } from './serverConfig';
 
 export async function refineComparison(
   comparison: Comparison,
-  instructions: string,
-  apiKey: string
+  instructions: string
 ): Promise<Comparison> {
-  if (!apiKey) {
-    throw new Error('API key is required');
-  }
-
+  const apiKey = getGeminiApiKey();
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 

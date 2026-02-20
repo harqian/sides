@@ -1,12 +1,10 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { ParsedInput, ComparisonItem, ComparisonPoint } from '@/types/comparison';
 import { generateId } from '@/lib/utils';
+import { getGeminiApiKey } from './serverConfig';
 
-export async function parseComparisonText(text: string, apiKey: string): Promise<ParsedInput> {
-  if (!apiKey) {
-    throw new Error('API key is required');
-  }
-
+export async function parseComparisonText(text: string): Promise<ParsedInput> {
+  const apiKey = getGeminiApiKey();
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
